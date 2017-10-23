@@ -32,6 +32,13 @@ def append_tx_per_second():
     TWEET_LIST.append(fmt_txrate)
 
 
+def append_mempool_tx_count():
+    """Return the mempool tx count"""
+    getmempoolinfo = CLIENT.call('getmempoolinfo')
+    fmt_getmempoolinfo = str(getmempoolinfo['size']) + ' tx in mempool'
+    TWEET_LIST.append(fmt_getmempoolinfo)
+
+
 def format_list_and_post_tweet():
     """Creates string from TWEET_LIST append operations
 
@@ -40,7 +47,8 @@ def format_list_and_post_tweet():
     """
     append_block_height()
     append_tx_per_second()
-    tweet = ' '.join(TWEET_LIST)
+    append_mempool_tx_count()
+    tweet = ' | '.join(TWEET_LIST)
     twitter = tweepy.API(TWITTER_AUTH)
     twitter.update_status(tweet)
 
