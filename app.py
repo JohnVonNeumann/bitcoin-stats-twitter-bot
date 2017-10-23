@@ -24,6 +24,14 @@ def append_block_height():
     TWEET_LIST.append(fmt_getblockcount)
 
 
+def append_tx_per_second():
+    """Return the current tx per second"""
+    getchaintxstats = CLIENT.call('getchaintxstats')
+    txrate = str(getchaintxstats['txrate'])
+    fmt_txrate = txrate[:4] + 'txps'
+    TWEET_LIST.append(fmt_txrate)
+
+
 def format_list_and_post_tweet():
     """Creates string from TWEET_LIST append operations
 
@@ -31,7 +39,8 @@ def format_list_and_post_tweet():
         string: passed to update_status as user facing/formatted output
     """
     append_block_height()
-    tweet = ''.join(TWEET_LIST)
+    append_tx_per_second()
+    tweet = ' '.join(TWEET_LIST)
     twitter = tweepy.API(TWITTER_AUTH)
     twitter.update_status(tweet)
 
