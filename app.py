@@ -17,23 +17,23 @@ TWITTER_AUTH.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
 TWEET_LIST = []
 
 
-def block_number():
+def append_block_height():
     """Return the current block height"""
-    blocks = CLIENT.call('getblockcount')
-    blocks_fmt = ('#' + str(blocks))
-    TWEET_LIST.append(blocks_fmt)
+    getblockcount = CLIENT.call('getblockcount')
+    fmt_getblockcount = ('#' + str(getblockcount))
+    TWEET_LIST.append(fmt_getblockcount)
 
 
-def finished_tweet():
+def format_list_and_post_tweet():
     """Creates string from TWEET_LIST append operations
 
     Returns:
         string: passed to update_status as user facing/formatted output
     """
-    block_number()
+    append_block_height()
     tweet = ''.join(TWEET_LIST)
-    print(tweet)
     twitter = tweepy.API(TWITTER_AUTH)
     twitter.update_status(tweet)
 
-finished_tweet()
+
+format_list_and_post_tweet()
