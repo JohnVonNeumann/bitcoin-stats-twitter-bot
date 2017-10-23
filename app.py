@@ -1,16 +1,39 @@
 import os
-import codecs
 
 import tweepy
 import bitcoin.rpc
 
-consumer_key = os.getenv('CONSUMER_KEY')
-consumer_secret = os.getenv('CONSUMER_SECRET')
-access_token = os.getenv('ACCESS_TOKEN')
-access_token_secret = os.getenv('ACCESS_TOKEN_SECRET')
 
-twitter_auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-twitter_auth.set_access_token(access_token, access_token_secret)
+CONSUMER_KEY = os.getenv('CONSUMER_KEY')
+CONSUMER_SECRET = os.getenv('CONSUMER_SECRET')
+ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
+ACCESS_TOKEN_SECRET = os.getenv('ACCESS_TOKEN_SECRET')
 
-twitter = tweepy.API(twitter_auth)
-twitter.update_status('And another one.')
+CLIENT = bitcoin.rpc.Proxy()
+
+TWITTER_AUTH = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+TWITTER_AUTH.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+
+TWEET_LIST = []
+
+
+def block_number():
+    """Return the current block height"""
+    blocks = CLIENT.call('getblockcount')
+    blocks_fmt = ('#' + str(blocks))
+    TWEET_LIST.append(blocks_fmt)
+
+
+def finished_tweet():
+    """Creates string from TWEET_LIST append operations
+
+    Returns:
+        string: passed to update_status as user facing/formatted output
+    """
+    block_number()
+    tweet = ''.join(TWEET_LIST)
+    print(tweet)
+    twitter = tweepy.API(TWITTER_AUTH)
+    twitter.update_status(tweet)
+
+finished_tweet()
