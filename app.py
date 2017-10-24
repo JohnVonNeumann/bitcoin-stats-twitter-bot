@@ -40,11 +40,7 @@ def append_mempool_tx_count():
 
 
 def format_list_and_post_tweet():
-    """Creates string from TWEET_LIST append operations
-
-    Returns:
-        string: passed to update_status as user facing/formatted output
-    """
+    """Creates string from TWEET_LIST append operations"""
     append_block_height()
     append_tx_per_second()
     append_mempool_tx_count()
@@ -52,5 +48,5 @@ def format_list_and_post_tweet():
     twitter = tweepy.API(TWITTER_AUTH)
     twitter.update_status(tweet)
 
-
-format_list_and_post_tweet()
+if __name__ == "__main__":
+    format_list_and_post_tweet()
