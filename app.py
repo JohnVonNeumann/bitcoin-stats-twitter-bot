@@ -1,4 +1,5 @@
 import os
+import re
 
 import tweepy
 import bitcoin.rpc
@@ -45,7 +46,9 @@ def append_segwit_block_size():
     getblock = CLIENT.call('getblock', getbestblockhash)
     getblocksize = getblock['size']
     blocksize = str(getblocksize / 1000)
-    fmt_blocksize = str("Last block " + blocksize[:4] + "kb")
+    slice_blocksize = blocksize[:4]
+    re_blocksize = re.sub('[.]', '', slice_blocksize)
+    fmt_blocksize = str("Last block " + re_blocksize + "kb")
     TWEET_LIST.append(fmt_blocksize)
 
 
