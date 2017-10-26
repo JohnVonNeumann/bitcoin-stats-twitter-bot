@@ -43,9 +43,9 @@ def append_segwit_block_size():
     """Return the segwit tx data of the last block"""
     getbestblockhash = CLIENT.call('getbestblockhash')
     getblock = CLIENT.call('getblock', getbestblockhash)
-    getblocksize = str(getblock['size'])
-    blocksize = str(getblocksize[0] + "." + getblocksize[1:3])
-    fmt_blocksize = str("Last block " + blocksize + "MB")
+    getblocksize = getblock['size']
+    blocksize = str(getblocksize / 1000)
+    fmt_blocksize = str("Last block " + blocksize[:4] + "kb")
     TWEET_LIST.append(fmt_blocksize)
 
 
