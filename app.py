@@ -47,7 +47,13 @@ def append_segwit_block_size():
     getblocksize = getblock['size']
     blocksize = str(getblocksize / 1000)
     slice_blocksize = blocksize[:4]
-    re_blocksize = re.sub('[.]', '', slice_blocksize)
+    
+    for index, elem in enumerate(list(slice_blocksize)):
+        if index == 3 and elem == ".":
+            re_blocksize = slice_blocksize[:3]
+        else:
+            re_blocksize = slice_blocksize
+
     fmt_blocksize = str("Last block " + re_blocksize + "kb")
     TWEET_LIST.append(fmt_blocksize)
 
