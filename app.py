@@ -73,9 +73,9 @@ def append_segwit_block_size():
     fmt_blocksize = str("Last block " + re_blocksize + "kb")
     fmt_strippedsize = str("tx data in block: " + re_strippedsize +"kb")
     fmt_segwitsize = str("SegWit-Blocksize Ratio: " + segwitsize)
-    TWEET_LIST.append(fmt_blocksize)
-    TWEET_LIST.append(fmt_strippedsize)
-    TWEET_LIST.append(fmt_segwitsize)
+    TWEET_LIST.extend([fmt_blocksize, fmt_strippedsize, fmt_segwitsize])
+    #TWEET_LIST.append(fmt_strippedsize)
+    #TWEET_LIST.append(fmt_segwitsize)
 
 def format_list_and_post_tweet():
     """Creates string from TWEET_LIST append operations"""
