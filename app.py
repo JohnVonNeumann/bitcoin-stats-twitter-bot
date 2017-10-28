@@ -44,7 +44,22 @@ def append_segwit_block_size():
     """Return the segwit tx data of the last block"""
     getbestblockhash = CLIENT.call('getbestblockhash')
     getblock = CLIENT.call('getblock', getbestblockhash)
+    
     getblocksize = getblock['size']
+    getstrippedsize = getblock['strippedsize']
+    getsegwitsize = getblocksize / getstrippedsize
+    
+    segwitsize = '{:.1%}'.format(getsegwitsize - 1)
+   
+    strippedsize = str(getstrippedsize / 1000)
+    slice_strippedsize = strippedsize[:4]
+
+    for index, elem in enumerate(list(slice_strippedsize)):
+        if index == 3 and elem == ".":
+            re_strippedsize = slice_strippedsize[:3]
+        else:
+            re_strippedsize = slice_strippedsize
+
     blocksize = str(getblocksize / 1000)
     slice_blocksize = blocksize[:4]
     
@@ -54,9 +69,13 @@ def append_segwit_block_size():
         else:
             re_blocksize = slice_blocksize
 
+    
     fmt_blocksize = str("Last block " + re_blocksize + "kb")
+    fmt_strippedsize = str("tx data in block: " + re_strippedsize +"kb")
+    fmt_segwitsize = str("SegWit-Blocksize Ratio: " + segwitsize)
     TWEET_LIST.append(fmt_blocksize)
-
+    TWEET_LIST.append(fmt_strippedsize)
+    TWEET_LIST.append(fmt_segwitsize)
 
 def format_list_and_post_tweet():
     """Creates string from TWEET_LIST append operations"""
